@@ -1,36 +1,36 @@
-
 import Vue from 'vue'
 import Router from 'vue-router'
-//import Helloworld from '@/components/Helloworld'
+//import HelloWorld from '@/components/HelloWorld'
 
 import UserIndex from '@/components/Index'
-import CreateUser from '@/components/CreateUser'
-import EditUser from '@/components/EditUser'
-import ShowUser from '@/components/ShowUser'
+import UserCreate from '@/components/CreateUser'
+import UserEdit from '@/components/EditUser'
+import UserShow from '@/components/ShowUser'
+
 
 Vue.use(Router)
 
 export default new Router({
-    routes: [
-        {
-            path: '/users',
-            name: 'users',
-            component: UserIndex
-        },
-        {
-            path: '/createuser',
-            Create: 'createuser',
-            component: CreateUser
-        },
-        {
-            path: '/edituser',
-            name: 'edituser',
-            component: EditUser
-        },
-        {
-            path: '/user',
-            Createme: 'showuser',
-            component: ShowUser
-        }
-    ]
+  routes: [
+    {
+      path: '/users',
+      name: 'users',
+      component: UserIndex
+    },
+    {
+      path: '/user/create',
+      name: 'user-create',
+      component: UserCreate
+    },
+    {
+      path: '/user/edit/:userId',
+      name: 'user-edit',
+      component: UserEdit
+    },
+    {
+      path: '/user/:userId',
+      name: 'user',
+      component: UserShow
+    }
+  ]
 })
