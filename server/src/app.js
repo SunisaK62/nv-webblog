@@ -10,20 +10,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors())
 
+require('./userPassport')
+
 require('./routes')(app)
 
-app.get('/status', function(req,res){
-    res.send('Hello nodejs server');
-})
-
-app.get('/hello/:person', function(req,res){
-    console.log('hello - ' + req.params.person);
-    res.send('say hello with ' + req.params.person);
-})
-
-app.post('/hello', function(req, res){
-    res.send('OK you post - ' +req.body.name)
-})
 
 let port = process.env.PORT || config.port;
 sequelize.sync({force: false}).then(() => {
