@@ -1,62 +1,56 @@
 <template>
-<div>
-    <h1>Edit Users</h1>
-    <form v-on:submit.prevent ="editUser">
-        <p>name: <input type="text" v-model="user.name"></p>
-        <p>lastname: <input type="text" v-model="user.lastname"></p>
-        <p>email: <input  type="text" v-model="user.email"></p>
-        <p>password: <input type="text" v-model="user.password"></p>
-        <p><button type="submit"> edit user </button></p>
-    </form>
+  <div>
+    <h1> Edit User</h1>
+      <form v-on:submit = "editUser">
+        <div>name : <input type="text" v-model = "user.name"></div>
+        <div>lastname : <input type="text" v-model = "user.lastname"></div>
+        <div>email : <input type="text" v-model = "user.email"></div>
+        <div>password : <input type="text" v-model = "user.password"></div>
+        <div><button type="submit">Edit User</button></div>
+      </form>
     <hr>
-    <div>
-        <p>name: {{user.name}}</p>
-        <p>lastname: {{user.lastname}}</p>
-        <p>email: {{user.email}}</p>
-        <p>password: {{user.password}}</p>
-    </div>
-</div> 
+      <div>
+        <div>name : {{user.name}}</div>
+        <div>lastname : {{user.lastname}}</div>
+        <div>email : {{user.email}}</div>
+        <div>password : {{user.password}}</div>
+      </div>
+  </div>
 </template>
-
 <script>
-import UsersService from '@/services/UsersService'
-
+import UserService from '@/services/UserService'
 export default {
-    data(){
-        return{
-            user:{
-                name: '',
-                lastname: '',
-                email: '',
-                password: '',
-                status: 'active'
-            }
-        }
-    },
-     methods:{
-        async editUser(){
-            try{
-                await UsersService.put(this.user)
-                this.$router.push({
-                    name: 'users'
-                })
-            }catch (err){
-                console.log(err)
-            }
-        }
-    },
-    async created(){
-        try{
-            let userId = this.$route.params.userId
-            this.user = (await UsersService.show(userId)).data
-        } catch(error){
-            console.log(error)
-        }
+  data (){
+    return {
+      user: {
+        name: '',
+        lastname:'',
+        email:'',
+        password:'',
+        status:'active'
+      }
     }
+  },
+  methods: {
+    async editUser (){
+      try{
+        await UserService.put(this.user)
+        this.$router.push({
+          name: 'users'
+        })
+      }catch(error){
+        console.log(error)
+      }
+    }
+  },async created() {
+    try {
+      let userId = this.$route.params.userId
+      this.user = (await UserService.show(userId)).data
+    }catch(error){
+      console.log(error)
+    }
+  },
 }
 </script>
-
 <style scoped>
-
-
 </style>

@@ -1,62 +1,63 @@
 <template>
-    <div>
-        <h2>Get all blogs</h2>
-        <p><button v-on:click="logout">Logout</button></p>
-        <h4>จำนวนblog {{blogs.length}}</h4>
-        <p><button v-on:click="navigateTo('/blog/create')">สร้าง blog</button></p>
-        <div v-for="blog in blogs" v-bind:key="blog.id">
-            <p>id: {{ blog.id }} </p>
-            <p>title: {{ blog.title }}</p>
-            <p>content: {{ blog.content }} </p>
-            <p>category: {{ blog.category }}</p>
-            <p>status: {{ blog.status }} </p>
-                <p><button v-on:click="navigateTo('/blog/'+blog.id)">ดู blog</button>
-                    <button v-on:click="navigateTo('/blog/edit/'+blog.id)">แก้ไข blog</button>
-                    <button v-on:click="deleteBlog(blog)">ลบข้อมูล</button>
-                </p>
-            <hr>
-        </div>
+  <div>
+    <h1>Get all blogs</h1>
+    <h4>จำนวน blog {{ blogs.length }}</h4>
+    <p><button v-on:click="navigateTo('/blog/create')">Create Blog</button></p>
+    <div v-for="blog in blogs" v-bind:key="blog.id">
+      <p>id: {{ blog.id }}</p>
+      <p>title: {{ blog.title }}</p>
+      <p>content: {{ blog.content }}</p>
+      <p>category: {{ blog.category }}</p>
+      <p>status: {{ blog.status }}</p>
+      <p>
+        <button v-on:click="navigateTo('/blog/' + blog.id)">Check Blog</button>
+        <button v-on:click="navigateTo('/blog/edit/' + blog.id)">
+          Edit Blog
+        </button>
+        <button v-on:click="deleteBlog(blog)">Delete Blog</button>
+      </p>
     </div>
+    <p><button v-on:click="logout">Logout</button></p>
+  </div>
 </template>
 <script>
-import BlogsService from '@/sercices/BlogsService'
+import BlogService from "@/services/BlogService";
 export default {
-    data() {
-        return{
-            blogs: []
-        }
+  data() {
+    return {
+      blogs: [],
+    };
+  },
+  async created() {
+    this.blogs = (await BlogService.index()).data;
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("setToken", null);
+      this.$store.dispatch("setUser", null);
+      this.$router.push({
+        name: "login",
+      });
     },
-    aync create () {
-        this.blogs = (await BlogsService.index()).data
+    navigateTo(route) {
+      this.$router.push(route);
     },
-    methods: {
-        logout () {
-            this.$store.dispatch('setToken', null)
-            this.$store.dispatch('setBlog', null)
-            this.$router.push({
-                name: 'login'
-            })
-        },
-        navigateTo (route) {
-            this.$router.push(route)
-        },
-        async deleteBlog (blog){
-            let result = confirm("Want to delete?")
-            if (result) {
-                try {
-                    awit BlogsService.delete(blog)
-                    this.refreshData()
-                } catch (err) {
-                    console.log(err)
-                }
-            }
-        },
-        aync refreshData(){
-            this.blogs = (await BlogsService.index()).data
+    async deleteBlog(blog) {
+      let result = confirm("Want to delete?");
+      if (result) {
+        try {
+          await BlogService.delete(blog);
+          this.refreshData();
+        } catch (err) {
+          console.log(err);
         }
-    }
-}
+      }
+    },
+    async refreshData() {
+      this.blogs = (await BlogService.index()).data;
+    },
+  },
+};
 </script>
 <style scoped>
-
 </style>

@@ -3,7 +3,7 @@ const config = require('../config/config')
 const jwt = require('jsonwebtoken')
 
 function jwtSignUser(user) {
-    const ONE_WEEK = 60 * 60 *24 * 7
+    const ONE_WEEK = 60 * 60 * 24 * 7
     return jwt.sign(user, config.authentication.jwtSecret, {
         expiresIn: ONE_WEEK
     })
@@ -11,18 +11,17 @@ function jwtSignUser(user) {
 
 module.exports = {
     async register(req, res) {
-        try{
+        try {
             const user = await User.create(req.body)
-            res.send(user.toJSON())
-        } catch (error) {
+            req.send(user.toJSON())
+        }catch(error){
             res.status(400).send({
                 error: 'The content information was incorrect'
             })
         }
     },
-
-    async login(req, res) {
-        try {
+    async login(req,res){
+        try{
             const { email, password } = req.body
             const user = await User.findOne({
                 where: {
@@ -45,9 +44,10 @@ module.exports = {
                 user: userJSON,
                 token: jwtSignUser(userJSON)
             })
-        } catch (error) {
+        
+        }catch(error){
             res.status(500).send({
-                error: 'Error! from get user'
+                error: 'Error ! from get user' 
             })
         }
     }
